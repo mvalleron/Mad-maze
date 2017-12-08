@@ -5,11 +5,19 @@ public class Graph implements Comparable<Graph>{
 	private Point[] voisin;
 	private int w;
 	private int h;
+	public Point GetPoint(int x, int y){
+		return voisin[x+y*w];
+	}
+	public int GetSize(){
+		return w*h;
+	}
 	public void CreatLabyrinth(){
+		int i= 0;
 		while(!estComplet()){
 			Point currentCase = PremierLibre();
-			while(currentCase.compareTo(voisin[w*h]) != 0 || currentCase.AucunVoisinDispo()){
+			while(currentCase.compareTo(voisin[w*h-1]) != 0 || currentCase.AucunVoisinDispo()){
 				currentCase = currentCase.RecupererSommet();
+				//System.out.println(currentCase);
 			}
 		}
 	}
@@ -65,6 +73,7 @@ public class Graph implements Comparable<Graph>{
 					voisin[x+y*w].SetNord(null);
 			}
 		}
+		CreatLabyrinth();
 	}
 	public Point getPosition(int x,int y){
 		return voisin[x+y*w];

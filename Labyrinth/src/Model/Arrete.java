@@ -35,8 +35,12 @@ public class Arrete implements Comparable<Arrete>{
 		return 1;
 	}
 	public Point Voisin(Point point) {
-		if(extremite[0].compareTo(point) == 0)
-			return extremite[0];
-		return extremite[1];
+		if(extremite[0] == null || extremite[1] == null){
+			return null;
+		}
+		if(extremite[0].compareTo(point) == 0){
+			return extremite[1];
+		}
+		return extremite[0];
 	}
 }

@@ -1,33 +1,51 @@
 package View;
-import javafx.scene.layout.Pane;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import Model.Graph;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 
-public class View  {
-
-	private static View instance;
-	static Scene scene;
-    static Pane pane ;
-
-	public View() {		
+public class View {
+	private static View instance=new View();
+	private Button button;
+	
+	private static Pane pane = new Pane();
+	private Scene scene;
+	
+	private View() {
+		
 	}
+	
 	public static View getInstance() {
-		if (instance == null) {
-			instance = new View();
-		}
 		return instance;
 	}
-	public void createView(Stage primaryStage , Graph g){
-		pane= new Pane();
-		Viewframe.drawFrame(primaryStage, scene, pane, 10,10);
-		primaryStage.setTitle("Mad Maze");
-		primaryStage.setScene(scene);
-		primaryStage.sizeToScene();
-		primaryStage.show();
-	 }
-}
 	
+	public void start(Stage primaryStage) throws Exception {
+		
+        // bouton
+        button=new Button("Joueur");
+        //player=new Actor(50,50,new Image(getClass().getResource(//Mettre le chemin vers l'image).toExternalForm() ));
+        
+        // ajout des éléments
+        //pane.getChildren().add(player.getImageView();
+        
+        // scène
+        scene = new Scene(pane,350,300);
+       
+        // stage
+        primaryStage.setTitle("Jeu labyrinthe"); 
+        primaryStage.setScene(scene); 
+        primaryStage.sizeToScene(); 
+        //scene.setOnKeyPressed(new PlayerListener());
+        primaryStage.show(); 
+	}
 	
 
+
+
+	public Button getButton() {
+		return button;
+	}
+
 	
+	
+}
