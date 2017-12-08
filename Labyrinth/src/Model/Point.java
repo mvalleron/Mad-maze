@@ -6,37 +6,45 @@ public class Point implements Comparable<Point>{
 	private int x;
 	private int y;
 	private Arrete[] voisin;
+	
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.voisin = new Arrete[4];
 	}
+	
 	public int GetX(){
 		return x;
 	}
+	
 	public int GetY(){
 		return y;
 	}
+	
 	public void SetSud(Point p){
 		voisin[3] = new Arrete(this,p);
 		if(p != null)
 			p.voisin[1] = voisin[3];
 	}
+	
 	public void SetNord(Point p){
 		voisin[1] = new Arrete(this,p);
 		if(p != null)
 			p.voisin[3] = voisin[1];
 	}
+	
 	public void SetOuest(Point p){
 		voisin[0] = new Arrete(this,p);
 		if(p != null)
 			p.voisin[2] = voisin[0];
 	}
+	
 	public void SetEst(Point p){
 		voisin[2] = new Arrete(this,p);
 		if(p != null)
 			p.voisin[0] = voisin[2];
 	}
+	
 	public Point GetSud(){
 		if(voisin[3].getType() == Matiere.mur || voisin[3].getPoint1() == null || voisin[3].getPoint2() == null){
 			return null;
@@ -46,6 +54,7 @@ public class Point implements Comparable<Point>{
 		}
 		return voisin[3].getPoint1();
 	}
+	
 	public Point GetNord(){
 		if(voisin[1].getType() == Matiere.mur || voisin[1].getPoint1() == null || voisin[1].getPoint2() == null){
 			return null;
@@ -55,6 +64,7 @@ public class Point implements Comparable<Point>{
 		}
 		return voisin[1].getPoint1();
 	}
+	
 	public Point GetOuest(){
 		if(voisin[0].getType() == Matiere.mur || voisin[0].getPoint1() == null || voisin[0].getPoint2() == null){
 			return null;
@@ -64,6 +74,7 @@ public class Point implements Comparable<Point>{
 		}
 		return voisin[0].getPoint1();
 	}
+	
 	public Point GetEst(){
 		if(voisin[2].getType() == Matiere.mur || voisin[2].getPoint1() == null || voisin[2].getPoint2() == null){
 			return null;
@@ -73,9 +84,11 @@ public class Point implements Comparable<Point>{
 		}
 		return voisin[2].getPoint1();
 	}
+	
 	public float Distance(Point p1,Point p2){
 		return (float) (Math.pow(p1.GetX()-p2.GetX(),2)+Math.pow(p1.GetY()-p2.GetY(),2));
 	}
+	
 	public int compareTo(Point position) {
 		if(this.x>position.x){
 			return 1;
@@ -96,28 +109,40 @@ public class Point implements Comparable<Point>{
 	public boolean estSeul() {
 		return GetEst() == null && GetOuest() == null && GetNord() == null && GetSud() == null;
 	}
-	public void rattacherAuReste() {
+	
+	public void rattacherAuReste() { //Rattache un sommet seul au reste de la structure (sommet non seul parmi voisin)
 		int tmp = (int) (Math.random()*4);
-		while(voisin[tmp].getType() == Matiere.corridor && voisin[tmp].Voisin(this) != null && !voisin[tmp].Voisin(this).estSeul()){
+		while(voisin[tmp].Voisin(this) == null || voisin[tmp].Voisin(this).estSeul()){
 			tmp = (int) (Math.random()*4);
 		} 
 		voisin[tmp].setType(Matiere.corridor); 
 	}
-	public boolean AucunVoisinDispo() {
+	
+	public boolean AucunVoisinDispo() {//Retourne si tout les voisins sont tous occupés..voisin = arete/Voisin=sommet
 		boolean vrai = voisin[0].Voisin(this) == null || !voisin[0].Voisin(this).estSeul();
 		vrai = vrai &&(voisin[1].Voisin(this) == null || !voisin[1].Voisin(this).estSeul());
 		vrai = vrai &&(voisin[2].Voisin(this) == null || !voisin[2].Voisin(this).estSeul());
 		vrai = vrai &&(voisin[3].Voisin(this) == null || !voisin[3].Voisin(this).estSeul());
 		return vrai;
 	}
-	public Point RecupererSommet() {
-		int tmp = 0;
-		do{
-			tmp = (int) (Math.random()*4);
+	
+	public Point RecupererSommet() { //Renvoie un sommet aléatoire non nul qui est seul, et aussi le voisin du sommet qui appelle
+		int tmp = (int) Math.floor(Math.random()*4);
+		try {
+			while(voisin[tmp].Voisin(this) == null || !voisin[tmp].Voisin(this).estSeul())
+			{
+				tmp = (int) Math.floor(Math.random()*4);
+			}
 		}
-		while(voisin[tmp].Voisin(this) != null && !voisin[tmp].Voisin(this).estSeul());
-		System.out.println(voisin[tmp].Voisin(this) == this);
-		voisin[tmp].setType(Matiere.corridor); 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		voisin[tmp].setType(Matiere.corridor);
 		return voisin[tmp].Voisin(this);
 	}
+}
+
+}
+
 }
