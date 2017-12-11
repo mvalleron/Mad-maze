@@ -45,6 +45,7 @@ public class Point implements Comparable<Point>{
 			p.voisin[0] = voisin[2];
 	}
 	
+	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetSud(){
 		if(voisin[3].getType() == Matiere.mur || voisin[3].getPoint1() == null || voisin[3].getPoint2() == null){
 			return null;
@@ -55,6 +56,7 @@ public class Point implements Comparable<Point>{
 		return voisin[3].getPoint1();
 	}
 	
+	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetNord(){
 		if(voisin[1].getType() == Matiere.mur || voisin[1].getPoint1() == null || voisin[1].getPoint2() == null){
 			return null;
@@ -65,6 +67,7 @@ public class Point implements Comparable<Point>{
 		return voisin[1].getPoint1();
 	}
 	
+	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetOuest(){
 		if(voisin[0].getType() == Matiere.mur || voisin[0].getPoint1() == null || voisin[0].getPoint2() == null){
 			return null;
@@ -75,6 +78,7 @@ public class Point implements Comparable<Point>{
 		return voisin[0].getPoint1();
 	}
 	
+	//Retourne le point si il est possible d accès, sinon retourn null
 	public Point GetEst(){
 		if(voisin[2].getType() == Matiere.mur || voisin[2].getPoint1() == null || voisin[2].getPoint2() == null){
 			return null;
@@ -106,11 +110,14 @@ public class Point implements Comparable<Point>{
 			return 0;
 		}
 	}
+	
+	//Renvoy vrai si le sommet n'a aucun voisin rattaché à lui
 	public boolean estSeul() {
 		return GetEst() == null && GetOuest() == null && GetNord() == null && GetSud() == null;
 	}
 	
-	public void rattacherAuReste() { //Rattache un sommet seul au reste de la structure (sommet non seul parmi voisin)
+	//Rattache un sommet seul au reste de la structure (sommet non seul parmi voisin)
+	public void rattacherAuReste() { 
 		int tmp = (int) (Math.random()*4);
 		while(voisin[tmp].Voisin(this) == null || voisin[tmp].Voisin(this).estSeul()){
 			tmp = (int) (Math.random()*4);
@@ -118,7 +125,8 @@ public class Point implements Comparable<Point>{
 		voisin[tmp].setType(Matiere.corridor); 
 	}
 	
-	public boolean AucunVoisinDispo() {//Retourne si tout les voisins sont tous occupés..voisin = arete/Voisin=sommet
+	//Retourne si tout les voisins sont tous occupés..voisin = arete/Voisin=sommet
+	public boolean AucunVoisinDispo() {
 		boolean vrai = voisin[0].Voisin(this) == null || !voisin[0].Voisin(this).estSeul();
 		vrai = vrai &&(voisin[1].Voisin(this) == null || !voisin[1].Voisin(this).estSeul());
 		vrai = vrai &&(voisin[2].Voisin(this) == null || !voisin[2].Voisin(this).estSeul());
@@ -126,23 +134,14 @@ public class Point implements Comparable<Point>{
 		return vrai;
 	}
 	
-	public Point RecupererSommet() { //Renvoie un sommet aléatoire non nul qui est seul, et aussi le voisin du sommet qui appelle
+	//Renvoie un sommet aléatoire non nul qui est seul, et aussi le voisin du sommet qui appelle
+	public Point RecupererSommet() { 
 		int tmp = (int) Math.floor(Math.random()*4);
-		try {
-			while(voisin[tmp].Voisin(this) == null || !voisin[tmp].Voisin(this).estSeul())
-			{
-				tmp = (int) Math.floor(Math.random()*4);
-			}
-		}
-		catch (Exception e)
+		while(voisin[tmp].Voisin(this) == null || !voisin[tmp].Voisin(this).estSeul())
 		{
-			e.printStackTrace();
+			tmp = (int) Math.floor(Math.random()*4);
 		}
 		voisin[tmp].setType(Matiere.corridor);
 		return voisin[tmp].Voisin(this);
 	}
-}
-
-}
-
 }
