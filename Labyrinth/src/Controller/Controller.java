@@ -29,6 +29,12 @@ public class Controller implements ActionListener
 	private static boolean demarrage;
 	
 	private static int tailleLabyrinthe = 10;
+	
+	private int turn = 0;
+	
+	public static int getTurn() {
+		return turn;
+	}
 
 	public static Point GetJoueurPosition() {
 		return joueur.GetPosition();
@@ -68,14 +74,22 @@ public class Controller implements ActionListener
 				
 			int x =joueur.GetPosition().GetX();
 			int y =joueur.GetPosition().GetY();
-			if(event.getCode().equals(KeyCode.UP))
+			if(event.getCode().equals(KeyCode.UP)) {
+				turn = 1;
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetNord());
-			else if(event.getCode()==KeyCode.DOWN)
+			}
+			else if(event.getCode()==KeyCode.DOWN) {
+				turn = 0;
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetSud());
-			else if(event.getCode()==KeyCode.LEFT)
+			}
+			else if(event.getCode()==KeyCode.LEFT) {
+				turn = 2;
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetOuest());
-			else if(event.getCode()==KeyCode.RIGHT)
+			}
+			else if(event.getCode()==KeyCode.RIGHT) {
+				turn = 3;
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetEst());
+			}
 			GameOver();	
 		}	
 	};
