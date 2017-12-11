@@ -14,22 +14,18 @@ public class Graph implements Comparable<Graph>{
 		return w*h;
 	}
 	
+	//Creer le labyrinth à condition qu'il soit initier.
 	public void CreatLabyrinth(){
 		while(!estComplet()){
 			Point currentCase = PremierLibre();
-			try
+			while(currentCase.compareTo(voisin[w*h-1]) != 0 && !currentCase.AucunVoisinDispo())
 			{
-				while(currentCase.compareTo(voisin[w*h-1]) != 0 && !currentCase.AucunVoisinDispo())
-				{
-					currentCase = currentCase.RecupererSommet();
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
+				currentCase = currentCase.RecupererSommet();
 			}
 		}
 	}
+	
+	//Retourne un sommet seul et le rattache au reste du graph
 	private Point PremierLibre() {
 		for(int i = 0; i < h*w;i++){
 			if(voisin[i].estSeul()){
@@ -42,6 +38,8 @@ public class Graph implements Comparable<Graph>{
 		}
 		return null;
 	}
+	
+	//retourne vrai si aucun sommet du graph n est seul
 	private boolean estComplet() {
 		for(int x = 0;x<h*w;x++){
 			if(voisin[x].estSeul()){
@@ -51,9 +49,9 @@ public class Graph implements Comparable<Graph>{
 		return true;
 	}
 	public Graph(){
-		w = 16;
-		h = 16;
-		voisin = new Point[16*16];
+		w = 10;
+		h = 10;
+		voisin = new Point[10*10];
 		initGraph();
 	}
 	public Graph(int w, int h){
@@ -62,6 +60,8 @@ public class Graph implements Comparable<Graph>{
 		voisin = new Point[h * w];
 		initGraph();
 	}
+	
+	//Initialise le graph en creant tout les sommets et en les connectant entre eux via des arrete tous initialiser a mur
 	public void initGraph(){
 		for(int y=0; y<h;y++){
 			for(int x=0; x<w; x++){
