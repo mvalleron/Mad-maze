@@ -2,13 +2,13 @@ package Model;
 
 public class Model {
 	
-	private Graph labyrinth;
+	private static Graph labyrinth;
 
 	public Model() {
 		labyrinth =  Graph.getInstance();
 	}
 
-	public Graph getLabyrinth() {
+	public static Graph getLabyrinth() {
 		return labyrinth;
 	}
 
