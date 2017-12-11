@@ -33,6 +33,7 @@ public class FrameView extends Pane{
     
     
     private FrameView() {
+    	this.requestLayout();
     }
     
     public static FrameView getInstance() {
@@ -75,162 +76,28 @@ public class FrameView extends Pane{
         Image image = new Image("porte.png");
         int xp =(sizeX)*(CELL*SPAN+WALL*SPAN);
         int yp =(sizeY)*(CELL*SPAN+WALL*SPAN);
-        square = new Rectangle(xp-(CELL*SPAN+WALL*SPAN)+SPAN,yp-(CELL*SPAN+WALL*SPAN)+SPAN ,CELL*(WALL+SPAN),CELL*(WALL+SPAN));
+        square = new Rectangle(xp-(CELL*SPAN+WALL*SPAN),yp-(CELL*SPAN+WALL*SPAN) ,CELL*WALL+SPAN,CELL*WALL+SPAN);
         ImagePattern imagePattern = new ImagePattern(image);
         square.setFill(imagePattern);
         getChildren().add(square);
-        
-        if(Controller.getTurn() == 0) {
-        	if (cpt == 3) {
-        		image = new Image("down2.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if (cpt == 1) {
-        		image = new Image("down1.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	
-        	if (cpt == 0 || cpt == 2) {
-        		image = new Image("downneutral.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if(Controller.getMove())
-        	cpt ++;
-        	Controller.setMove();
-        	if (cpt == 4) {
-        		cpt = 0;
-        	}
-        }
-        
-        if(Controller.getTurn() == 1) {
-        	if (cpt1 == 3) {
-        		image = new Image("up2.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if (cpt1 == 1) {
-        		image = new Image("up1.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	
-        	if (cpt1 == 0 || cpt1 == 2) {
-        		image = new Image("upneutral.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if(Controller.getMove())
-        	cpt1 ++;
-        	Controller.setMove();
-        	if (cpt1 == 4) {
-        		cpt1 = 0;
-        	}
-        }
-        
-        if(Controller.getTurn() == 2) {
-        	if (cpt2 == 3) {
-        		image = new Image("left2.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if (cpt2 == 1) {
-        		image = new Image("left1.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	
-        	if (cpt2 == 0 || cpt2 == 2) {
-        		image = new Image("leftneutral.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if(Controller.getMove())
-        	cpt2 ++;
-        	Controller.setMove();
-        	if (cpt2 == 4) {
-        		cpt2 = 0;
-        	}
-        }
-        
-        if(Controller.getTurn() == 3) {
-        	if (cpt3 == 3) {
-        		image = new Image("right2.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if (cpt3 == 1) {
-        		image = new Image("right1.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	
-        	if (cpt3 == 0 || cpt3 == 2) {
-        		image = new Image("rightneutral.png");
-        		xp =Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
-        		yp =Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
-        		square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-        		imagePattern = new ImagePattern(image);
-        		square.setFill(imagePattern);
-        		getChildren().add(square);
-        	}
-        	if(Controller.getMove())
-        	cpt3 ++;
-        	Controller.setMove();
-        	if (cpt3 == 4) {
-        		cpt3 = 0;
-        	}
-        }
-        
+        for(int i = 0; i<Controller.Controller.getNbMonster();i++){
+        	image = new Image("bas1.png");
+            xp =Controller.Controller.positionMonstre(i).GetX()*(CELL*SPAN+WALL*SPAN);
+            yp =Controller.Controller.positionMonstre(i).GetY()*(CELL*SPAN+WALL*SPAN);
+            square = new Rectangle(xp-(CELL*SPAN+WALL*SPAN),yp-(CELL*SPAN+WALL*SPAN) ,CELL*CELL,CELL*CELL);
+            imagePattern = new ImagePattern(image);
+            square.setFill(imagePattern);
+            getChildren().add(square);
+    	}
+        image = new Image("bas1.png");
+        xp =Controller.Controller.GetJoueurPosition().GetX()*(CELL*SPAN+WALL*SPAN);
+        yp =Controller.Controller.GetJoueurPosition().GetY()*(CELL*SPAN+WALL*SPAN);
+        square = new Rectangle(xp-(CELL*SPAN+WALL*SPAN),yp-(CELL*SPAN+WALL*SPAN) ,CELL*CELL,CELL*CELL);
+        imagePattern = new ImagePattern(image);
+        square.setFill(imagePattern);
+        getChildren().add(square);
         drawWall(this, Model.Model.getLabyrinth(),WALL_COLOR);
     }
-	
     public void rafraichir(Graph g) {
     	sizeX = (int)Math.sqrt(g.GetSize());
     	sizeY = (int)Math.sqrt(g.GetSize());
@@ -242,7 +109,6 @@ public class FrameView extends Pane{
     }
 
     public void drawFrame(Stage stage,Scene scene, Pane pane, int nbrX, int nbrY,Graph g) {
-    	
     	this.stage = stage;
     	init = true;
     	sizeX = nbrX;
