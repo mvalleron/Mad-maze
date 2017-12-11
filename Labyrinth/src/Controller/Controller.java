@@ -58,7 +58,7 @@ public class Controller implements ActionListener
 
 	private static void initMonstre() {
 		int i = 0;
-		while(i < nbMonstre-1) {
+		while(i < nbMonstre) {
 			monstres[i] =  new Monstre((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
 			if(monstres[i].GetPosition().compareTo(joueur.GetPosition())==0)
 				i--;
@@ -118,7 +118,7 @@ public class Controller implements ActionListener
                         Platform.runLater(new Runnable(){
                             public void run() {
                             	for(int i = 0; i<nbMonstre;i++){
-                            		//monstres[i].NextPoint();
+                            		monstres[i].NextPoint();
                             	}
                             	ViewGame.getInstance().raffraichir(model.getLabyrinth());
                             }
