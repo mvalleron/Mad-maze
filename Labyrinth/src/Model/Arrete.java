@@ -34,6 +34,8 @@ public class Arrete implements Comparable<Arrete>{
 		}
 		return 1;
 	}
+	
+	//retourne le voisin par rapport a cette arrete du point passé en commentaire, null si il y en a pas 
 	public Point Voisin(Point point) {
 		if(extremite[0] == null || extremite[1] == null){
 			return null;
