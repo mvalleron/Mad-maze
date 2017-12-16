@@ -13,6 +13,16 @@ public class Point implements Comparable<Point>{
 		this.voisin = new Arrete[4];
 	}
 	
+	//Change la matière de l arrete i en la matière type;
+	public void changerMatiereArrete(int i, Matiere type) {
+		voisin[i].setType(type);
+	}
+	
+	//renvoy l arrete i
+	protected Arrete GetArrete(int i) {
+		return voisin[i];
+	}
+	
 	public int GetX(){
 		return x;
 	}
