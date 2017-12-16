@@ -16,7 +16,8 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import Model.*;
 import View.*;
-
+import Controller.Interrupteur.Action;
+import Model.Arrete.Matiere;
 
 
 public class Controller implements ActionListener
@@ -26,12 +27,14 @@ public class Controller implements ActionListener
 	private static Model model;
 	private static AnimationTimer timer;
 	private static Point arriver;
-	private static boolean demarrage;
 	private static CarteDistance carte;
 	private static Monstre[] monstres;
+	private static Interrupteur[] portes;
+	private static int nbPorte = 1;
 	
-	private static int nbMonstre = 2;
+	private static int nbMonstre = 1;
 	private static int tailleLabyrinthe = 10;
+	private static int lenteurMonstre = 30;
 
 	public static Point GetJoueurPosition() {
 		return joueur.GetPosition();
@@ -52,27 +55,63 @@ public class Controller implements ActionListener
 		View.getInstance();
 	    model= new Model();
 	    carte = new CarteDistance();
-	    monstres = new Monstre[nbMonstre];
 	    initMonstre();
+	    initPorte();
 	}
 
 	private static void initMonstre() {
 		int i = 0;
+		monstres = new Monstre[nbMonstre];
 		while(i < nbMonstre) {
 			monstres[i] =  new Monstre((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
 			if(monstres[i].GetPosition().compareTo(joueur.GetPosition())==0)
 				i--;
 			if(monstres[i].GetPosition().compareTo(arriver)==0)
 				i--;
+			monstres[i].SetLenteur(lenteurMonstre);
 			i++;
 		}
 		
 	}
+	private static void initPorte() {
+		int i = 0;
+		portes = new Interrupteur[nbPorte*2];
+		while(i<nbPorte*2) {
+			carte = new CarteDistance();
+			Arrete porte;
+			do {
+				porte = model.getLabyrinth().GetPorte();
+			}while(porte.getPoint1().compareTo(joueur.GetPosition()) == 0 || porte.getPoint2().compareTo(joueur.GetPosition()) == 0 || porte.getPoint1().compareTo(arriver) == 0 || porte.getPoint2().compareTo(arriver) == 0);
+			Point interrupteurOuverture;
+			do {
+				interrupteurOuverture = new Point((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
+			}while(carte.tab[interrupteurOuverture.GetX()][interrupteurOuverture.GetY()]>carte.tab[porte.getPoint1().GetX()][porte.getPoint1().GetY()] || carte.tab[interrupteurOuverture.GetX()][interrupteurOuverture.GetY()]>carte.tab[porte.getPoint2().GetX()][porte.getPoint2().GetY()] || carte.tab[interrupteurOuverture.GetX()][interrupteurOuverture.GetY()] == -1);
+			Point interrupteurFermeture;
+			do {
+				interrupteurFermeture = new Point((int)(Math.random()*(tailleLabyrinthe-1)),(int)(Math.random()*(tailleLabyrinthe-1)));
+			}while(carte.tab[interrupteurFermeture.GetX()][interrupteurFermeture.GetY()]<carte.tab[porte.getPoint1().GetX()][porte.getPoint1().GetY()] || carte.tab[interrupteurFermeture.GetX()][interrupteurFermeture.GetY()]<carte.tab[porte.getPoint2().GetX()][porte.getPoint2().GetY()] || carte.tab[interrupteurFermeture.GetX()][interrupteurFermeture.GetY()] == -1);
+			portes[i] = new Interrupteur(interrupteurOuverture,porte,Action.ouvrir);
+			i++;
+			portes[i] = new Interrupteur(interrupteurFermeture,porte,Action.fermer);
+			i++;
+			porte.setType(Matiere.mur);
+		}
+		
+	}
+	public static Action GetTypeInterrupteur(int i) {
+		return portes[i].GetAction();
+	}
 	public static int getNbMonster() {
 		return nbMonstre;
 	}
+	public static int getNbInterrupteur() {
+		return nbPorte*2;
+	}
 	public static Point positionMonstre(int i) {
 		return monstres[i].GetPosition();
+	}
+	public static Point positionInterrupteur(int i) {
+		return portes[i].GetPosition();
 	}
 	public static void start(Stage primaryStage) throws Exception {
 		ViewGame.getInstance().createGlobalView(primaryStage, model.getLabyrinth());
@@ -82,13 +121,26 @@ public class Controller implements ActionListener
 		timer.start();
 	}
 	private static void GameOver() {
+		for(int i = 0; i < nbMonstre; i++) {
+			if(joueur.GetPosition().compareTo(monstres[i].GetPosition()) == 0) {
+				joueur.SetPosition(new Point(0,0));
+				arriver = new Point(tailleLabyrinthe-1,tailleLabyrinthe-1);
+				model.setLabyrinth(new Graph(tailleLabyrinthe,tailleLabyrinthe));
+				initMonstre();
+				initPorte();
+				break;
+			}
+		}
 		if(joueur.GetPosition().compareTo(arriver) == 0) {
 			tailleLabyrinthe++;
 			joueur.SetPosition(new Point(0,0));
 			arriver = new Point(tailleLabyrinthe-1,tailleLabyrinthe-1);
 			model.setLabyrinth(new Graph(tailleLabyrinthe,tailleLabyrinthe));
 			nbMonstre++;
+			nbPorte++;
+			lenteurMonstre --;
 			initMonstre();
+			initPorte();
 		}
 		
 	}
@@ -107,6 +159,10 @@ public class Controller implements ActionListener
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetEst());
 			GameOver();	
 			carte = new CarteDistance();
+			for(int i = 0; i<nbPorte*2;i++){
+				if(portes[i].GetPosition().compareTo(joueur.GetPosition()) == 0)
+					portes[i].interrupteurActionner();
+			}
 		}	
 	};
 	public void actionPerformed(ActionEvent arg0) {
@@ -117,14 +173,16 @@ public class Controller implements ActionListener
                     	scheduler.shutdown();
                         Platform.runLater(new Runnable(){
                             public void run() {
-                            	for(int i = 0; i<nbMonstre;i++){
-                            		monstres[i].NextPoint();
-                            	}
-                            	ViewGame.getInstance().raffraichir(model.getLabyrinth());
+                            		for(int i = 0; i<nbMonstre;i++){
+                            			monstres[i].NextPoint();
+                            		}
+                            		ViewGame.getInstance().raffraichir(model.getLabyrinth());
+                            		GameOver();	
                             }
                         });   
                     }
                 },1,1,TimeUnit.MILLISECONDS);	
 	}
 }
+
 
