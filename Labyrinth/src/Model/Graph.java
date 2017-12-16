@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Arrete.Matiere;
+
 public class Graph implements Comparable<Graph>{
 	private static Graph instance = null;
 	private Point[] voisin;
@@ -61,6 +63,55 @@ public class Graph implements Comparable<Graph>{
 		initGraph();
 	}
 	
+	//doit enlever des murs pour etre jouable 
+	//direction: 0 = sud, 1 = ouest, 2 = nord et 3 = est
+	public void rendreJouable() {
+		for(int i=0; i<h;i++){
+			int x = (int)(Math.random()*w);
+			int y = (int)(Math.random()*h);
+			int direction = (int)(Math.random()*4);
+			if(x == 0) {
+				if(direction == 1 || voisin[x+y*w].GetOuest() != null) {
+					i--;
+					continue;
+				}
+			}
+			else if(x<w-1) {
+				if(direction == 3 || voisin[x+y*w].GetEst() != null) {
+					i--;
+					continue;
+				}
+			}
+			if(y == 0) {
+				if(direction == 2 || voisin[x+y*w].GetSud() != null) {
+					i--;
+					continue;
+				}
+			}
+			else if(y<h-1) {
+				if(direction == 0 || voisin[x+y*w].GetNord() != null) {
+					i--;
+					continue;
+				}
+			}
+			voisin[x+y*w].changerMatiereArrete(direction,Matiere.corridor);
+		}
+	}
+	
+	//renvoy une arrete aléatoire pour qu elle devienne une porte
+	public Arrete GetPorte() {
+		Arrete tmp;
+		do {
+			tmp = voisin[(int)(Math.random()*w) + (int)(Math.random()*h)*w].GetArrete((int)(Math.random()*4));
+		}while(tmp.getType() != Matiere.corridor);
+		return tmp;
+	}
+	
+	//retour l arrete i du point j
+	private Arrete GetArrete(int i, int j) {
+		return voisin[i].GetArrete(i);
+	}
+	
 	//Initialise le graph en creant tout les sommets et en les connectant entre eux via des arrete tous initialiser a mur
 	public void initGraph(){
 		for(int y=0; y<h;y++){
@@ -85,6 +136,7 @@ public class Graph implements Comparable<Graph>{
 			}
 		}
 		CreatLabyrinth();
+		rendreJouable();
 	}
 	public Point getPosition(int x,int y){
 		return voisin[x+y*w];
@@ -101,5 +153,4 @@ public class Graph implements Comparable<Graph>{
 		return (instance);
 	}
 }
-
 
