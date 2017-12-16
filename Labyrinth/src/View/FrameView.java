@@ -3,6 +3,7 @@ package View;
 
 
 
+import Controller.Interrupteur.Action;
 import Model.Graph;
 import Model.Point;
 import javafx.scene.Scene;
@@ -80,6 +81,18 @@ public class FrameView extends Pane{
         ImagePattern imagePattern = new ImagePattern(image);
         square.setFill(imagePattern);
         getChildren().add(square);
+        for(int i = 0; i<Controller.Controller.getNbInterrupteur();i++){
+        	if(Controller.Controller.GetTypeInterrupteur(i) == Action.ouvrir)
+        		image = new Image("boutonOuvrirLabyrinthe.png");
+        	else
+        		image = new Image("boutonFermerLabyrinthe.png");
+            xp =Controller.Controller.positionInterrupteur(i).GetX()*(CELL*SPAN+WALL*SPAN);
+            yp =Controller.Controller.positionInterrupteur(i).GetY()*(CELL*SPAN+WALL*SPAN);
+            square = new Rectangle(xp-(CELL*SPAN)+(CELL*SPAN)+(WALL*SPAN),yp-(CELL*SPAN)+(CELL*SPAN)+(WALL*SPAN) ,CELL*SPAN,CELL*SPAN);
+            imagePattern = new ImagePattern(image);
+            square.setFill(imagePattern);
+            getChildren().add(square);
+    	}
         for(int i = 0; i<Controller.Controller.getNbMonster();i++){
         	image = new Image("bas1.png");
             xp =Controller.Controller.positionMonstre(i).GetX()*(CELL*SPAN+WALL*SPAN);
