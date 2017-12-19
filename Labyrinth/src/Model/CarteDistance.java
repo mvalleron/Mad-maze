@@ -17,7 +17,7 @@ public class CarteDistance {
 		PointSuivant(p,0);
 	}
 	public void PointSuivant(Point actuelle,int valeur) {
-		if(tab[actuelle.GetX()][actuelle.GetY()] == -1) {
+		if(tab[actuelle.GetX()][actuelle.GetY()] == -1 || tab[actuelle.GetX()][actuelle.GetY()] > valeur) {
 			tab[actuelle.GetX()][actuelle.GetY()] =1+valeur++;
 			if(actuelle.GetEst() != null)
 				PointSuivant(actuelle.GetEst(),valeur);
