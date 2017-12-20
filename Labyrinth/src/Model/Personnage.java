@@ -1,10 +1,14 @@
 package Model;
 
+import Controller.Controller;
+
 public class Personnage {
 	
 	private Point position;
 	private int turn;
+	private boolean direction;
 	private boolean move;
+	private int cpt = 0;
 	
 	protected String[] tabGauche = new String[3];
 	protected String[] tabDroite = new String[3];
@@ -15,11 +19,14 @@ public class Personnage {
 		position = new Point(x,y);
 		turn = 0;
 		move = false;
+		direction = false;
 	}
 	
 	public void SetPosition(Point p) {
-		if(p != null)
+		if(p != null){
 			position = p;
+			move = true;
+		}
 	}
 	
 	public Point GetPosition() {
@@ -34,21 +41,37 @@ public class Personnage {
 		this.turn = turn;
 	}
 	
-	public boolean getMove() {
-		return move;
-	}
 	
-	public void setMove(boolean b) {
-		move = b;
+	public void setMove() {
+		if(move){
+			switch(cpt){
+			case 0:
+				cpt = 2;
+				direction = true;
+				break;
+			case 1:
+				cpt = 2;
+				direction = false;
+				break;
+			case 2:
+				if(direction)
+					cpt = 1;
+				else 
+					cpt = 0;
+				break;
+			}
+			move = false;
+		}
 	}
-	public String[] getIdImage(){
+	public String getIdImage(){
+		setMove();
 		if(turn == 0)
-			return tabBas;
+			return tabBas[cpt];
 		else if(turn == 1)
-			return tabHaut;
+			return tabHaut[cpt];
 		else if(turn == 2)
-			return tabGauche;
+			return tabGauche[cpt];
 		else
-			return tabDroite;
+			return tabDroite[cpt];
 	}
 }
