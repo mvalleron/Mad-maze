@@ -13,6 +13,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
@@ -26,6 +30,7 @@ public class FrameView extends Pane{
 
 	public static final Paint WALL_COLOR = Color.BLACK;
 
+	static Pane paneScore;
 	static Scene scene;
 	static Pane pane = new Pane();
 	static int sizeX;
@@ -149,6 +154,7 @@ public class FrameView extends Pane{
 		stage.setWidth(width);
 		stage.setHeight(height);
 		paint();
+		mettreAJourScore();
 	}
 
 	public void drawFrame(Stage stage,Scene scene, Pane pane, int nbrX, int nbrY,Graph g) {
@@ -163,8 +169,37 @@ public class FrameView extends Pane{
 		scene.setOnKeyPressed(Controller.eventHandlerButton);
 		stage.setScene(scene);
 		paint();
+		initFenetreScore();
 	}
-
+	
+	public void initFenetreScore(){
+		Stage stage = new Stage();
+		Pane pane = new Pane();
+		scene = new Scene(pane, 300, 100);
+		stage.setScene(scene);
+		stage.setX(this.stage.getX()+this.stage.getWidth()/2);
+		paneScore = pane;
+		mettreAJourScore();
+		stage.show();
+	}
+	
+	public void mettreAJourScore(){
+		paneScore.getChildren().clear();
+		TextFlow textFlow = new TextFlow();
+		textFlow.setLayoutX(40);
+		textFlow.setLayoutY(40);
+		Text text1 = new Text("SCORE ");
+		text1.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+		text1.setFill(Color.RED);
+		Text text2 = new Text(":");
+		text2.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+		text2.setFill(Color.ORANGE);
+		Text text3 = new Text(" 0");
+		text3.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+		text3.setFill(Color.GREEN);
+		textFlow.getChildren().addAll(text1, text2, text3);
+		paneScore.getChildren().add(textFlow);
+	}
 	public void drawWall(Pane pane, Graph g, Paint color) {
 		int x = 0, y = 0, xspan = 0, yspan = 0;
 		int tmp = (int)Math.sqrt(g.GetSize());
