@@ -47,19 +47,6 @@ public class Controller implements ActionListener
 		return nbcoins;
 	}
 	
-	public static boolean getMove(int i) {
-		if(i==0)
-			return joueur.getMove();
-		else
-			return monstres[i-1].getMove();
-	}
-	
-	public static void setMove(int i) {
-		if(i==0)
-			joueur.setMove(false);
-		else
-			monstres[i-1].setMove(false);
-	}
 	
 	public static int getTurn(int i) {
 		if(i==nbMonstre)
@@ -223,25 +210,21 @@ public class Controller implements ActionListener
 			if(event.getCode().equals(KeyCode.UP)) {
 				//turn = 1;
 				joueur.setTurn(1);
-				joueur.setMove(true);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetNord());
 			}
 			else if(event.getCode()==KeyCode.DOWN) {
 				//turn = 0;
 				joueur.setTurn(0);
-				joueur.setMove(true);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetSud());
 			}
 			else if(event.getCode()==KeyCode.LEFT) {
 				//turn = 2;
 				joueur.setTurn(2);
-				joueur.setMove(true);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetOuest());
 			}
 			else if(event.getCode()==KeyCode.RIGHT) {
 				//turn = 3;
 				joueur.setTurn(3);
-				joueur.setMove(true);
 				joueur.SetPosition(Model.getLabyrinth().GetPoint(x, y).GetEst());
 			} 
 			GameOver();
@@ -278,12 +261,10 @@ public class Controller implements ActionListener
 		return coins[i];
 	}
 
-	public static String[] getIdImage(int i) {
+	public static String getIdImage(int i) {
 		if(i == nbMonstre)
 			return joueur.getIdImage();
 		return monstres[i].getIdImage();
 	}
 }
-
-
 
