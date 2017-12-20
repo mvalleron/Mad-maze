@@ -1,7 +1,6 @@
 package Model;
 
 import Controller.Controller;
-import Controller.Joueur;
 
 public class CarteDistance {
 	public int[][] tab;
