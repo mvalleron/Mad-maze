@@ -35,9 +35,6 @@ public class FrameView extends Pane{
 	private Stage stage;
 
 	private int cpt = 0;	//compteur bas
-	private int cpt1 = 0;	//compteur haut
-	private int cpt2 = 0;
-	private int cpt3 = 0;
 	private int cpt4 = 0; //compteur de pièces
 
 	private FrameView() {
@@ -99,15 +96,6 @@ public class FrameView extends Pane{
 			square.setFill(imagePattern);
 			getChildren().add(square);
 		}
-		for(int i = 0; i<Controller.getNbMonster();i++){
-			image = new Image("KNA_00.png");
-			xp = Controller.positionMonstre(i).GetX()*(CELL*SPAN+WALL*SPAN);
-			yp = Controller.positionMonstre(i).GetY()*(CELL*SPAN+WALL*SPAN);
-			square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-			imagePattern = new ImagePattern(image);
-			square.setFill(imagePattern);
-			getChildren().add(square);
-		}
 
 		for(int i = 0; i<Controller.getNbCoins(); i++) {
 			if(cpt4 == 0 || cpt4 == 1) {
@@ -139,40 +127,14 @@ public class FrameView extends Pane{
 			}
 		}
 		for(int i=0; i<Controller.getNbMonster()+1; i++) {
-			if (cpt == 3) {
-				image = new Image(Controller.getIdImage(i)[1]);
-				xp =Controller.positionMonstre(i).GetX()*(CELL*SPAN+WALL*SPAN);
-				yp =Controller.positionMonstre(i).GetY()*(CELL*SPAN+WALL*SPAN);
-				square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-				imagePattern = new ImagePattern(image);
-				square.setFill(imagePattern);
-				getChildren().add(square);
-			}
-			if (cpt == 1) {
-				image = new Image(Controller.getIdImage(i)[0]);
-				xp =Controller.positionMonstre(i).GetX()*(CELL*SPAN+WALL*SPAN);
-				yp =Controller.positionMonstre(i).GetY()*(CELL*SPAN+WALL*SPAN);
-				square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-				imagePattern = new ImagePattern(image);
-				square.setFill(imagePattern);
-				getChildren().add(square);
-			}
+			image = new Image(Controller.getIdImage(i));
+			xp =Controller.positionMonstre(i).GetX()*(CELL*SPAN+WALL*SPAN);
+			yp =Controller.positionMonstre(i).GetY()*(CELL*SPAN+WALL*SPAN);
+			square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
+			imagePattern = new ImagePattern(image);
+			square.setFill(imagePattern);
+			getChildren().add(square);
 
-			if (cpt == 0 || cpt == 2) {
-				image = new Image(Controller.getIdImage(i)[2]);
-				xp =Controller.positionMonstre(i).GetX()*(CELL*SPAN+WALL*SPAN);
-				yp =Controller.positionMonstre(i).GetY()*(CELL*SPAN+WALL*SPAN);
-				square = new Rectangle(xp+2*SPAN,yp+3*SPAN,CELL*SPAN,CELL*SPAN);
-				imagePattern = new ImagePattern(image);
-				square.setFill(imagePattern);
-				getChildren().add(square);
-			}
-			if(Controller.getMove(i))
-				cpt ++;
-			Controller.setMove(i);
-			if (cpt == 4) {
-				cpt = 0;
-			}
 		}
 		drawWall(this, Model.Model.getLabyrinth(),WALL_COLOR);
 		cpt4++;
