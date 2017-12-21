@@ -40,6 +40,13 @@ public class Controller implements ActionListener
 	private static int tailleLabyrinthe = 10;
 	private static int nbcoins = 3;
 	
+	private static Score score;
+	private static int niveau = 0;
+	
+	public static int getScore(){
+		return score.GetScore();
+	}
+	
 	//private static int turn = 0;
 	//private static boolean move = false;
 	
@@ -71,6 +78,7 @@ public class Controller implements ActionListener
 	}
 	
 	public Controller () {
+		score = new Score();
 		joueur = new Joueur(0,0);
 		arrivee = new Point(tailleLabyrinthe-1,tailleLabyrinthe-1);
 		initCoins();
@@ -101,7 +109,7 @@ public class Controller implements ActionListener
 			carte = new CarteDistance();
 			Arrete porte;
 			do {
-				porte = model.getLabyrinth().GetPorte();
+				porte = Model.getLabyrinth().GetPorte();
 			}while(porte.getPoint1().compareTo(joueur.GetPosition()) == 0 || porte.getPoint2().compareTo(joueur.GetPosition()) == 0 || porte.getPoint1().compareTo(arrivee) == 0 || porte.getPoint2().compareTo(arrivee) == 0);
 			Point interrupteurOuverture;
 			do {
@@ -143,8 +151,8 @@ public class Controller implements ActionListener
 }
 
 	public static void start(Stage primaryStage) throws Exception {
-		ViewGame.getInstance().createGlobalView(primaryStage, model.getLabyrinth());
-		ViewGame.getInstance().raffraichir(model.getLabyrinth());
+		ViewGame.getInstance().createGlobalView(primaryStage, Model.getLabyrinth());
+		ViewGame.getInstance().raffraichir(Model.getLabyrinth());
 		primaryStage.show();
 		timer = new AnimationTimer(getInstance());
 		timer.start();
@@ -157,10 +165,13 @@ public class Controller implements ActionListener
 				model.setLabyrinth(new Graph(tailleLabyrinthe,tailleLabyrinthe));
 				initMonstre();
 				initPorte();
+				score.PerdreScore();
 				break;
 			}
 }
 		if(joueur.GetPosition().compareTo(arrivee) == 0) {
+			score.AjouterScore(nbcoins*100);
+			niveau++;
 			tailleLabyrinthe++;
 			joueur.SetPosition(new Point(0,0));
 			arrivee = new Point(tailleLabyrinthe-1,tailleLabyrinthe-1);
@@ -198,6 +209,7 @@ public class Controller implements ActionListener
 		for(int i = 0; i<nbcoins; i++) {
 			if(joueur.GetPosition().compareTo(getCoin(i)) == 0) {
 				coins[i] = new Point(-1,-1);
+				score.AjouterScore(100);
 			}
 		}
 	}	
