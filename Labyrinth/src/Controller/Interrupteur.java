@@ -1,7 +1,6 @@
 package Controller;
 
 import Model.Arrete;
-import Model.Arrete.Matiere;
 import Model.Point;
 
 public class Interrupteur {
