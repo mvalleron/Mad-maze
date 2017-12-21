@@ -151,8 +151,8 @@ public class Controller implements ActionListener
 }
 
 	public static void start(Stage primaryStage) throws Exception {
-		ViewGame.getInstance().createGlobalView(primaryStage, Model.getLabyrinth());
-		ViewGame.getInstance().raffraichir(Model.getLabyrinth());
+		View.getInstance().createGlobalView(primaryStage, Model.getLabyrinth());
+		View.getInstance().raffraichir(Model.getLabyrinth());
 		primaryStage.show();
 		timer = new AnimationTimer(getInstance());
 		timer.start();
@@ -261,7 +261,7 @@ public class Controller implements ActionListener
                             	for(int i = 0; i<nbMonstre;i++){
                         			monstres[i].NextPoint();
                             	}
-                            	ViewGame.getInstance().raffraichir(model.getLabyrinth());
+                            	View.getInstance().raffraichir(model.getLabyrinth());
                             	GameOver();
                             }
                         });   
