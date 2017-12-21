@@ -177,7 +177,7 @@ public class FrameView extends Pane{
 		Pane pane = new Pane();
 		scene = new Scene(pane, 300, 100);
 		stage.setScene(scene);
-		stage.setX(this.stage.getX()+this.stage.getWidth()/2);
+		stage.setX(this.stage.getX());
 		paneScore = pane;
 		mettreAJourScore();
 		stage.show();
@@ -194,7 +194,7 @@ public class FrameView extends Pane{
 		Text text2 = new Text(":");
 		text2.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
 		text2.setFill(Color.ORANGE);
-		Text text3 = new Text(" 0");
+		Text text3 = new Text("" + Controller.getScore());
 		text3.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
 		text3.setFill(Color.GREEN);
 		textFlow.getChildren().addAll(text1, text2, text3);
